@@ -1,0 +1,129 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="page-title">Video Status</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="">Dashboard</a></li>
+								</ul>
+							</div>
+						
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<!-- Leave Statistics -->
+					<div class="row">
+						<div class="col-md-4 d-flex">
+							<div class="stats-info w-100">
+								<h6>Today Video Uploads</h6>
+								<h4>{{ current_day_videos }}</h4>
+							</div>
+						</div>
+						<div class="col-md-4 d-flex">
+							<div class="stats-info w-100">
+								<h6>Total Videos Uploaded</h6>
+								<h4>{{ total_videos }}</h4>
+							</div>
+						</div>
+						<div class="col-md-4 d-flex">
+							<div class="stats-info w-100">
+								<h6>Average Uploads Per day</h6>
+								<h4>{{ average_uploads_per_day|floatformat:1 }}</h4>
+							</div>
+						</div>
+					
+					</div>
+				
+					<!-- /Leave Statistics -->
+					
+					<!-- Search Filter -->
+					<form method="post" action="{% url 'userList' %}">
+						{% csrf_token %}
+					<div class="row filter-row">
+					   <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
+							<div class="input-block mb-3 form-focus">
+								<input type="text" class="form-control floating" name="employee_name" id="employee_name">
+								<label class="focus-label">Employee Name</label>
+							</div>
+					   </div>
+					   <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
+							<div class="input-block mb-3 form-focus select-focus">
+								<select class="select floating" name="subject_type" id="subject_type"> 
+									<option> -- Select -- </option>
+									<option>Arithmetic</option>
+									<option>Aptitude</option>
+									<option>Reasoning</option>
+									<option>English</option>
+								</select>
+								<label class="focus-label">Subject</label>
+							</div>
+					   </div>
+					
+					 
+					   <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-12">  
+						<div class="input-block mb-3 form-focus">
+							<div class="cal-icon">
+								<input class="form-control floating datetimepicker" type="datetime" name="end_date" id="end_date" >
+							</div>
+							<label class="focus-label">Date and Time</label>
+						</div>
+					</div>
+					<div class="col-sm-8 col-md-6 col-lg-8 col-xl-3 col-12">
+						<button type="submit" class="btn btn-success w-100">Search</button>
+					</div> 
+					<div class="col-sm-6 col-md-6 col-lg-6 col-xl-2 col-12">
+						<button type="{% url 'userList' %}" class="btn btn-danger w-100">Reset</button>
+					</div>    
+                    </div>
+					<!-- /Search Filter -->
+					</form>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table class="table table-striped custom-table mb-0 datatable">
+									<thead>
+										<tr>
+											<th>Employee</th>
+											<th>Date</th>
+
+											<th>Subject</th>
+											<th>No of Videos Uploaded</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for user_data in users_data %}
+
+										<tr>
+											
+											<td><a href="{% url 'profile' user_id=user_data.user.id %}">{{ user_data.user.username }}</a></td>
+											<td>{{ user_data.upload_datetime }}</td>
+											<td>{{ user_data.subject_type }}</td>
+											<td>{{ user_data.number_of_videos }}</td>
+											
+											
+										</tr>
+										{% endfor %}
+									
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+				
+				
+            </div>
+			<!-- /Page Wrapper -->
+{% endblock %}
